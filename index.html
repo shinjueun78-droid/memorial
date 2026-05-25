@@ -141,11 +141,23 @@
       width: 100%;
       max-width: 340px;
       border-radius: 2px;
-      filter: sepia(15%) contrast(0.95);
+      filter: sepia(20%) contrast(0.92);
+    }
+
+    .photo-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 45%;
+      background: linear-gradient(to bottom, transparent, var(--paper));
+      border-radius: 0 0 2px 2px;
+      pointer-events: none;
     }
 
     .photo-caption {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       font-size: 11px;
       color: var(--ink-light);
       letter-spacing: 2px;
