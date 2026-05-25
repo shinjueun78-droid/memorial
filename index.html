@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>모친님 영전에</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink: #1a1714;
+      --ink-mid: #4a4540;
+      --ink-light: #8a8480;
+      --ink-faint: #c5c0bb;
+      --paper: #f7f4ef;
+      --paper-warm: #ede8e0;
+      --accent: #7a6a5a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 300;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* 배경 질감 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    /* 헤더 */
+    .header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .ornament {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 10px;
+      color: var(--ink-faint);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .ornament-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .ornament-line::before,
+    .ornament-line::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 0.5px;
+      background: var(--ink-faint);
+    }
+
+    .ornament-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ink-faint);
+    }
+
+    h1 {
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 600;
+      letter-spacing: 6px;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--ink-light);
+      letter-spacing: 3px;
+      font-weight: 300;
+    }
+
+    .date-badge {
+      display: inline-block;
+      margin-top: 1.25rem;
+      font-size: 11px;
+      color: var(--ink-light);
+      letter-spacing: 2px;
+      border: 0.5px solid var(--ink-faint);
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* 사진 */
+    .photo-section {
+      margin-bottom: 3.5rem;
+      text-align: center;
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+
+    .photo-wrap {
+      display: inline-block;
+      position: relative;
+    }
+
+    .photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 0.5px solid var(--ink-faint);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .photo-wrap img {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      border-radius: 2px;
+      filter: sepia(15%) contrast(0.95);
+    }
+
+    .photo-caption {
+      margin-top: 1rem;
+      font-size: 11px;
+      color: var(--ink-light);
+      letter-spacing: 2px;
+    }
+
+    /* 시 본문 */
+    .poem {
+      animation: fadeUp 1.2s 0.4s ease both;
+    }
+
+    .stanza {
+      margin-bottom: 2.2rem;
+    }
+
+    .line {
+      display: block;
+      font-size: 15px;
+      line-height: 2.4;
+      color: var(--ink);
+      font-weight: 300;
+    }
+
+    .line.call {
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 2.2rem 0;
+      color: var(--ink-faint);
+    }
+
+    .divider span {
+      font-size: 10px;
+      letter-spacing: 6px;
+    }
+
+    /* 하단 */
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 0.5px solid var(--ink-faint);
+      animation: fadeUp 1.2s 0.6s ease both;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: var(--ink-light);
+      letter-spacing: 2px;
+      line-height: 2.2;
+      font-weight: 300;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 2.5rem 1.5rem 4rem; }
+      h1 { letter-spacing: 4px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="ornament-line">
+      <div class="ornament-dot"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-dot"></div>
+    </div>
+    <h1>모친님 영전에</h1>
+    <p class="subtitle">삼가 어머님을 추모하며</p>
+    <span class="date-badge">1973년 2월 5일</span>
+  </header>
+
+  <div class="photo-section">
+    <div class="photo-wrap">
+      <img src="photo.jpg" alt="벚꽃 아래 두 분의 사진">
+    </div>
+    <p class="photo-caption">벚꽃 아래, 봄날의 기억</p>
+  </div>
+
+  <div class="poem">
+
+    <div class="stanza">
+      <span class="line call">오호! 가버리신 모친님이시여!</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">어머님 모르실 새식구들 모이고</span>
+      <span class="line">사랑하는 성도님들 함께 모이여</span>
+      <span class="line">모친님 별세하신지 오랜 그날을</span>
+      <span class="line">뜻깊게 뜻깊게 추모합니다.</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line">천대와 멸시와 격별로 얼붙고</span>
+      <span class="line">입바람 거센 이 풍진 세상에……</span>
+      <span class="line">어린 것 3남매 오렷이 놓고</span>
+      <span class="line">다시 오리 한마디 약속도 없이</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">중노에 지치고 병고에 못 견디어</span>
+      <span class="line">어려운 마지막 고개를</span>
+      <span class="line">견디다 못해 떠나실제는</span>
+      <span class="line">33세 젊은 남편 그손도 뿌리치시고</span>
+      <span class="line">혈혈단신 외롭게 혼자 남으시던</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">그날의 적막이 생생이 살아 있는 오늘,</span>
+      <span class="line">벌써 지난간 그날이 돌아왔나요.</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line">가슴 아픈 슬픔이여.</span>
+      <span class="line">애타게 그립기만한 천년같은 지난날</span>
+      <span class="line">하루같이 허무하군요.</span>
+      <span class="line">벌써 다 흘러 갔는가요.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">어린 것이 불쌍타고 몸부림치시며</span>
+      <span class="line">잃어진 건강을 회복하시려던 어머님.</span>
+      <span class="line">그 눈에는 얽혀진 멸시 속에</span>
+      <span class="line">어린 것들 그대로는 차마 못 놓겠다시며</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">안타까워!! 뼈저린 피눈물 흘리시며</span>
+      <span class="line">짜내는 듯 진땀을 흘리시며</span>
+      <span class="line call">나 죽으면 너희들 어떻게 살리?</span>
+      <span class="line">목이 메어 물으시던 어머니시여</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line">어째서 유언조차 못 남기셨나요</span>
+      <span class="line">남과 같이 무식이나 하셨단 말이지</span>
+      <span class="line">유식하고 명필이 아니였던가요</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">어머님 얼굴이 어렴풋이 떠올라 올 제면</span>
+      <span class="line">인자하고 부드러운 그 음성이 그리워요</span>
+      <span class="line">한마디라도 남기시지 그냥 가셔서</span>
+      <span class="line">34년 그 땅에서 그대로 주무십니까?</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line call">어머님!</span>
+      <span class="line">인자하신 그 모습 계신 곳이 어디일까요?</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line call">어머님!</span>
+      <span class="line">오늘도 그리움은 가심이 없사옵고</span>
+      <span class="line">아쉬움도 그 어디에 비기리오만든</span>
+      <span class="line">우리 주님 허락하신 그 위로 받고</span>
+      <span class="line">오늘도 소망 중에 그 날을 기다립니다</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line call">어머님!</span>
+      <span class="line">당신의 인자와 자비를 계승치 못해</span>
+      <span class="line">알력의 불씨로 분열이 된 채</span>
+      <span class="line">헤어진 친척이 모이지 못합니다.</span>
+      <span class="line call">어머님! 용서하셔요.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">내 동생 셋째는 무서운 멸시 속에</span>
+      <span class="line">어린 목숨 살지 못했어요</span>
+      <span class="line">그나마 밤길에 뱀물려 죽어 갔고요</span>
+      <span class="line">그 뒤에 누나는 여인이길래</span>
+      <span class="line">가야 할 출가 길을 울면서 갔답니다</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">원수 같은 38선에서</span>
+      <span class="line">불구자 형님은 행방이 불명이 되고요</span>
+      <span class="line">국운에 탓이련가? 가정의 비운인가?</span>
+      <span class="line">이 못난 둘째의 무능한 탓인지</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">부친님과 단 두 식구</span>
+      <span class="line">남쪽과 북쪽에 알알이 헤어져</span>
+      <span class="line">이쪽저쪽 그리워 가슴만 탑니다</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line">기나 긴 세월 동안</span>
+      <span class="line">갖은 풍상을 겪으면서도</span>
+      <span class="line">못 느낀 슬픔이 34년 전</span>
+      <span class="line">그 날이 지나간 오늘</span>
+      <span class="line">춘 삼월 새싹 같이 가슴에 벅차고</span>
+      <span class="line">내리는 궂은 비는 눈물인 양 슬프기만 합니다</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line call">어머님!</span>
+      <span class="line">지금은 어디에 계시온지요</span>
+      <span class="line">내 동생 셋째는 품에 안으셨겠는지요</span>
+      <span class="line">못난 것이 가정 이뤄 다섯 식구 되어</span>
+      <span class="line">인생길 인정 포구에 아늑히 안기오나</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">얼굴도 희미한 어머님 품이</span>
+      <span class="line">이다지도 못 견디게 그리워만집니다</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">몸부림을 치다 못해 이제는</span>
+      <span class="line">그 어머님 이름이라도 불러보고 싶어요</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line">때로는 거센 냉정 매서운 인심</span>
+      <span class="line">목숨 걸고 싸우다가 그만이야</span>
+      <span class="line">어머님, 가신 날도 잊고 살다가</span>
+      <span class="line">오늘에 73. 2. 5은 기언이 잊지 않고</span>
+      <span class="line">기억합니다.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">남몰래 혼자 아는 그 날이지만</span>
+      <span class="line">온세상 온누리가 나를 위해 울어주듯</span>
+      <span class="line">구슬프고 처량한 시간만 갑니다</span>
+    </div>
+
+    <div class="divider"><span>—</span></div>
+
+    <div class="stanza">
+      <span class="line call">어머님.</span>
+      <span class="line">혼자 봄 외롭게 당신 영전에 뵈오니</span>
+      <span class="line">부끄럽고 송구함이 금치 못해요</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">부친님은 이북에 혼자 계시고</span>
+      <span class="line">누님도 그 근처에 살고 있지만</span>
+      <span class="line">오늘의 이 시간 기억하는지……</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">못생긴 둘째만 이곳에 있어</span>
+      <span class="line">다섯 식구 성도님과 같이 모여 있으나</span>
+      <span class="line">왜인지 번뇌 속에 적막이 뒤덮여서</span>
+      <span class="line">조용히 이 밤이 깊어만 갑니다</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">어둠 속에 깊어가는 고요는 어머님의 정</span>
+      <span class="line">그 품에 안기워 자고만 싶어요</span>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>삼가 어머님의 영면을 빕니다</p>
+    <p>1973. 2. 5</p>
+  </footer>
+
+</div>
+</body>
+</html>
